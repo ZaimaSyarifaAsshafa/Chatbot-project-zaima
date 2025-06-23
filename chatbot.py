@@ -108,8 +108,8 @@ if user_input:
 
     with st.spinner("Thinking..."):
         "messages": [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": user_input}
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": user_input}
         ]
 
         try:
