@@ -107,10 +107,13 @@ if user_input:
     st.session_state.chat_history.append({"role": "user", "content": user_input})
 
     with st.spinner("Thinking..."):
-        "messages": [
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": user_input}
-        ]
+        payload = {
+            "model": MODEL,
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_input}
+            ]
+        }
 
         try:
             response = requests.post(API_URL, headers=HEADERS, json=payload, timeout=10)
