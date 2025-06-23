@@ -110,7 +110,6 @@ if user_input:
             "model": MODEL,
             "messages": [
             {"role": "system", "content": "You are a helpful assistant."}] + st.session_state.chat_history
-            ]
         }
 
         try:
