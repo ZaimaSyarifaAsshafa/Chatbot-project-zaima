@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-# Konfigurasi API
+# ---------------- KONFIGURASI API ----------------
 OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
 MODEL = "openai/gpt-3.5-turbo"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -14,24 +14,42 @@ HEADERS = {
 
 # ---------------- PAGE TITLE ----------------
 st.set_page_config(page_title="AI Chatbot", page_icon="🤖")
+
+# Layout wrapper
+st.markdown('<div id="main-container">', unsafe_allow_html=True)
+
 st.title("🤖 AI Chatbot")
 st.markdown("Powered by [Mistral AI](https://mistral.ai/) & OpenRouter")
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------- STYLING ----------------
 st.markdown("""
-    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     <style>
-    html, body, div, p {
-        font-family: 'Inter', sans-serif;
+    html, body, [data-testid="stApp"] {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #ffe6f0; /* Baby pink background */
     }
+
+    #main-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        justify-content: space-between;
+        padding: 1rem;
+    }
+
     .message-container {
         display: flex;
         margin-bottom: 1rem;
         align-items: flex-start;
     }
+
     .user-container {
         flex-direction: row-reverse;
     }
+
     .avatar {
         width: 40px;
         height: 40px;
@@ -41,6 +59,7 @@ st.markdown("""
         align-items: center;
         justify-content: center;
     }
+
     .chat-message {
         padding: 0.75rem 1rem;
         border-radius: 1rem;
@@ -49,13 +68,15 @@ st.markdown("""
         font-size: 1rem;
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
+
     .user-message {
-        background-color: #1E88E5;
+        background-color: #ff99cc; /* PINK for user */
         color: white;
         margin-left: auto;
     }
+
     .bot-message {
-        background-color: #f5f5f5;
+        background-color: #f0f0f0; /* SOFT GREY for bot */
         color: black;
         margin-right: auto;
     }
@@ -66,29 +87,31 @@ st.markdown("""
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
+# ---------------- INPUT DI LUAR COLUMNS ----------------
+user_input = st.chat_input("Type your message here...")
+
 # ---------------- DISPLAY CHAT ----------------
 for chat in st.session_state.chat_history:
     role = chat["role"]
     message = chat["content"]
 
-    avatar = "🤖" if role == "assistant" else "👤"
+    avatar = "💗" if role == "user" else "🤖"
     role_class = "bot-message" if role == "assistant" else "user-message"
     container_class = "message-container user-container" if role == "user" else "message-container"
 
     st.markdown(f"""
         <div class="{container_class}">
             <div class="avatar">{avatar}</div>
-            <div class="chat-message {role_class}">
-                {message}
+            <div>
+                <div style="font-size: 0.75rem; color: gray; margin-bottom: 0.2rem;">{"You" if role == "user" else "Bot"}</div>
+                <div class="chat-message {role_class}">{message}</div>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-# ---------------- USER INPUT + ACTION BUTTONS ----------------
-chat_col, btn_col1, btn_col2 = st.columns([8, 1, 1])
 
-with chat_col:
-    user_input = st.chat_input("Type your message here...")
+# ---------------- ACTION BUTTONS ----------------
+chat_col, btn_col1, btn_col2 = st.columns([8, 1, 1])
 
 with btn_col1:
     if st.button("🧹", help="Clear chat"):
@@ -104,19 +127,17 @@ with btn_col2:
 
 # ---------------- HANDLE INPUT & API ----------------
 if user_input:
+    # Simpan input user ke riwayat
     st.session_state.chat_history.append({"role": "user", "content": user_input})
 
     with st.spinner("Thinking..."):
         payload = {
             "model": MODEL,
-            "messages": [
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": user_input}
-            ]
+            "messages": [{"role": "system", "content": "You are a helpful assistant."}] + st.session_state.chat_history
         }
 
         try:
-            response = requests.post(API_URL, headers=HEADERS, json=payload, timeout=10)
+            response = requests.post(API_URL, headers=HEADERS, json=payload, timeout=15)
             response.raise_for_status()
             data = response.json()
 
@@ -136,4 +157,5 @@ if user_input:
         except Exception as e:
             bot_reply = f"Terjadi error tak terduga: {e}"
 
+    # Simpan balasan bot
     st.session_state.chat_history.append({"role": "assistant", "content": bot_reply})
