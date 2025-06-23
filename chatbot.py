@@ -4,7 +4,6 @@ import requests
 # Konfigurasi API
 OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
 MODEL = "openai/gpt-3.5-turbo"
-API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 HEADERS = {
     "Authorization": f"Bearer {OPENROUTER_API_KEY}",
