@@ -18,32 +18,19 @@ st.markdown("Powered by [Mistral AI](https://mistral.ai/) & OpenRouter")
 
 # ---------------- STYLING ----------------
 st.markdown("""
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     <style>
-    html, body, [data-testid="stApp"] {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        background-color: #ffe6f0; /* Baby pink background */
+    html, body, div, p {
+        font-family: 'Inter', sans-serif;
     }
-
-    #main-container {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        justify-content: space-between;
-        padding: 1rem;
-    }
-
     .message-container {
         display: flex;
         margin-bottom: 1rem;
         align-items: flex-start;
     }
-
     .user-container {
         flex-direction: row-reverse;
     }
-
     .avatar {
         width: 40px;
         height: 40px;
@@ -53,7 +40,6 @@ st.markdown("""
         align-items: center;
         justify-content: center;
     }
-
     .chat-message {
         padding: 0.75rem 1rem;
         border-radius: 1rem;
@@ -62,15 +48,13 @@ st.markdown("""
         font-size: 1rem;
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-
     .user-message {
-        background-color: #ff99cc; /* PINK for user */
+        background-color: #1E88E5;
         color: white;
         margin-left: auto;
     }
-
     .bot-message {
-        background-color: #f0f0f0; /* SOFT GREY for bot */
+        background-color: #f5f5f5;
         color: black;
         margin-right: auto;
     }
