@@ -70,7 +70,7 @@ for chat in st.session_state.chat_history:
     role = chat["role"]
     message = chat["content"]
 
-    avatar = "🤖" if role == "assistant" else "👤"
+    avatar = "🤖" if role == "assistant" else "💗"
     role_class = "bot-message" if role == "assistant" else "user-message"
     container_class = "message-container user-container" if role == "user" else "message-container"
 
