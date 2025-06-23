@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # Konfigurasi API
-OPENROUTER_API_KEY = "sk-or-v1-...your_api_key_here"  
+OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
 MODEL = "openai/gpt-3.5-turbo"
 
 HEADERS = {
